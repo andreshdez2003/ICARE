@@ -1,14 +1,3 @@
-def file_menu():
-    while True:
-        print("What type of file would you like to read?")
-        print("1. Excel file (.xls or .xlsx)")
-        print("2. CSV file (.csv)")
-        option = input("Choose an option (1 or 2): ")
-
-        if option in ["1", "2"]:
-            return option
-        else:
-            print("Invalid option. Please try again.\n")
 
 def plot_menu():
     plot_choices = {

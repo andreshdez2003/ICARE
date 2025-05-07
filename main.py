@@ -1,25 +1,21 @@
-from Utils.menus import file_menu,plot_preprocesing_menu
+from Utils.menus import plot_preprocesing_menu
 from Utils.lable import annotate_event_in_dataframe, select_event_column_name
 from File_Handler.reader import read_file
-from File_Handler.standar import standardize_dataframe, add_events_columns
+from File_Handler.standar import standardize_dataframe
 from File_Handler.saver import save_dataframe_to_excel
-from Plotter import plot_column, plot_processed
+from Plotter import plot_column
 
-# Step 1: Read and prepare the dataframe
-option = file_menu()
-df = read_file(option, "standardized_Kitchen_Andres2.xlsx")
+# Step 1: Read Dataframe 
 
+df = read_file("Kitchen_Andres2.csv")
 if df is None:
     print("Failed to read the file. Please check the file path and format.")
     exit()
 
-print("\nIs the first time you open this file?:")
-choice = input("Enter your choice (1(yes) or 2(no)): ")
-if choice == "1":
-    final_df = standardize_dataframe(df)
-    final_df = add_events_columns(final_df)
-elif choice == "2":
-    final_df = df.copy()
+# Step 2: Standarize the dataframe if it's the first time opening the file 
+
+final_df = standardize_dataframe(df)
+
 # Step 3: Main loop to modify or exit
 username = select_event_column_name(final_df)
 
@@ -46,7 +42,7 @@ while True:
             if plot_choice == "1":
                 plot_column(final_df)
             elif plot_choice == "2":
-                plot_processed(final_df)
+                plot_column(final_df)#plot_processed(final_df)
             else:
                 print("⚠️ Opción inválida. Volviendo al menú principal.")
         except Exception as e:
