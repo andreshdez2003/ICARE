@@ -1,33 +1,29 @@
-import pandas as pd
 from pathlib import Path
+import pandas as pd
 
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-OUTPUT_DIR = BASE_DIR / "Data" /"Output_Files"
-
-
-def save_dataframe_to_csv(df, filename):
+def save_dataframe_to_csv(df, filename, output_dir): 
     """
-    Saves a DataFrame to a CSV file.
+    Guarda un DataFrame en un archivo CSV.
 
-    Parameters:
-    - df (pd.DataFrame): The DataFrame to save.
-    - filename (str): The full path or name of the output CSV file (e.g. 'output.csv').
+    Parámetros:
+    - df: DataFrame a guardar.
+    - filename: Nombre del archivo (ej. 'output.csv').
+    - output_dir: Directorio de salida (objeto Path).
     """
     try:
-        file_path = OUTPUT_DIR / filename
+        output_dir.mkdir(parents=True, exist_ok=True)  # Crea el directorio si no existe
+        file_path = output_dir / filename
         df.to_csv(file_path, index=False)
-        print(f"DataFrame saved successfully to '{file_path}'")
+        print(f"✅ DataFrame guardado en '{file_path}'")
     except Exception as e:
-        print(f"Error saving DataFrame to CSV: {e}")
+        print(f"❌ Error al guardar CSV: {e}")
 
-def save_dataframe_to_excel(df, filename):
+def save_dataframe_to_excel(df, filename, output_dir): 
     try:
-        file_path = OUTPUT_DIR / filename
+        output_dir.mkdir(parents=True, exist_ok=True)
+        file_path = output_dir / filename
         df.to_excel(file_path, index=False)
-        print(f"DataFrame saved successfully to '{file_path}'")
+        print(f"✅ DataFrame guardado en '{file_path}'")
     except Exception as e:
-        print(f"Error saving DataFrame to xlsx: {e}")
-
+        print(f"❌ Error al guardar Excel: {e}")
 

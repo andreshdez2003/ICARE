@@ -6,9 +6,11 @@ def get_file_path(filename):
     BASE_DIR = Path(__file__).resolve().parent.parent
     INPUT_DIR = BASE_DIR / "Data" / "Input_Files"
     OUTPUT_DIR = BASE_DIR / "Data" / "Output_Files"
+    PROCESSED_DIR = BASE_DIR / "Data" / "Processed_Files"
 
     output_path = OUTPUT_DIR / filename
     input_path = INPUT_DIR / filename
+    procesed_path = PROCESSED_DIR / filename
 
     if output_path.exists():
         print(f"Found file in Output_Files: {filename}")
@@ -16,8 +18,11 @@ def get_file_path(filename):
     if input_path.exists():
         print(f"Found file in Input_Files: {filename}")
         return input_path
+    if procesed_path.exists():
+        print(f"Found file in Processed_Files: {filename}")
+        return procesed_path
     
-    print("File not found in Input_Files or Output_Files.")
+    print("File not found in Input_Files , Output_Files or Processed_Files.")
     return None
 
 def detect_file_type(file_path):
@@ -41,7 +46,7 @@ def read_file(filename):
     
     if file_type == 'excel':
         try:
-            df = pd.read_excel(file_path)
+            df = pd.read_excel(file_path,decimal=',')
             print("Excel file read successfully.\n")
             return df
         except Exception as e:

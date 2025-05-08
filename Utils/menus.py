@@ -21,9 +21,3 @@ def plot_menu():
         print("❌ Invalid choice.")
         return None
 
-def plot_preprocesing_menu():
-    print("\nSeleccione el tipo de gráfico:")
-    print("1. Señal original")
-    print("2. Señal procesada (sin tendencia/normalizada)")
-    choice = input("Opción (1 o 2): ")
-    return choice

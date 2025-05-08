@@ -1,3 +1,3 @@
-from .menus import plot_menu, plot_preprocesing_menu
+from .menus import plot_menu
 from .lable import annotate_event_in_dataframe,select_event_column_name
-from .preprocesing import clean_hexadecimal, detrend_data, normalize_data
+from .preprocesing import process_dataframe
