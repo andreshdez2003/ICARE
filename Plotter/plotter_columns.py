@@ -40,7 +40,7 @@ def plot_data(filtered_df, column_name, start_date, end_date):
     ax.plot(filtered_df['Date'], filtered_df[column_name], label=column_name, color='blue')
     setup_plot_style(ax, column_name, start_date, end_date)
     plt.tight_layout()
-    plt.show()
+    plt.show(block=False)
 
 def plot_column(df):
     """Función principal que coordina el flujo de trabajo completo"""

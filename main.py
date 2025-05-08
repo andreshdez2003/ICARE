@@ -9,9 +9,10 @@ from Plotter import plot_column
 # Definir directorios 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT_DIR = BASE_DIR / "Data" / "Output_Files"
+PROCESSED_DIR = BASE_DIR / "Data" / "Processed_Files"
 
 # Paso 1: Leer archivo
-df = read_file("processed_Kitchen_Andres2.xlsx")
+df = read_file("standardized_Bathroom_Rosa.xlsx")
 if df is None:
     print("❌ Failed to read the file. Please check the file path and format.")
     exit()
@@ -47,20 +48,35 @@ while True:
 
     elif choice == "3":
         try:
-            final_df = process_dataframe(final_df)
+            final_df = process_dataframe(final_df,window_length=21,polyorder=3)
             print("✅ Dataframe preprocessed successfully.")
         except Exception as e:
             print(f"❌ Error during preprocessing: {e}")
 
     elif choice == "4":
-        filename = input("Enter a name for the output Excel file (without extension): ").strip()
-        if filename:
-            save_dataframe_to_excel(final_df, filename, OUTPUT_DIR)
-            print(f"✅ DataFrame saved successfully as {filename}.xlsx.")
-        else:
+        filename = input("Enter a name for the output Excel file: ").strip()
+        if not filename:
             print("⚠️ Invalid filename. DataFrame not saved.")
+            print("Exiting the program.")
+            break
+
+        print("\nWhere would you like to save the file?")
+        print("1. Output_Files")
+        print("2. Processed_Files")
+        dir_choice = input("Enter 1 or 2: ").strip()
+
+        if dir_choice == "1":
+            save_path = OUTPUT_DIR
+        elif dir_choice == "2":
+            save_path = PROCESSED_DIR
+        else:
+            print("⚠️ Invalid directory choice. DataFrame not saved.")
+            print("Exiting the program.")
+            break
+
+        save_dataframe_to_excel(final_df, filename, save_path)
+        print(f"✅ DataFrame saved successfully as {filename}.xlsx in '{save_path.name}'.")
         print("Exiting the program.")
         break
-
     else:
         print("⚠️ Invalid choice. Please enter 1, 2, 3 or 4.")
