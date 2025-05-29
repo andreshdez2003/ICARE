@@ -73,6 +73,16 @@ def standardize_dataframe(df):
     
     # Solo aplicar estandarización si no hay columnas de eventos
     if not has_events_columns:
+        # Bucle para obtener un nombre válido
+        while True:
+            user_name = input("Enter the name of the user to add: ").strip()
+            
+            if user_name:  
+                df = add_event_columns(df, [user_name])
+                break  
+            else:
+                print("❌ No user name provided. Please enter a valid name.")
+       
         df = remove_x_columns(df)
         df = remove_highcharts_column(df)
         df = reorder_dataframe_columns(df)

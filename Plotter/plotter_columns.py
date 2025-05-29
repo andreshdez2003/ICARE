@@ -34,37 +34,46 @@ def setup_plot_style(ax, column_name, start_date, end_date):
     ax.legend()
     ax.grid(True)
 
-def plot_data(filtered_df, column_name, start_date, end_date):
+def plot_data(filtered_df, column_name, start_date, end_date, event_column=None):
     """Genera y muestra el gráfico"""
     fig, ax = plt.subplots(figsize=(16, 6), dpi=100)
     ax.plot(filtered_df['Date'], filtered_df[column_name], label=column_name, color='blue')
+
+    # Superponer eventos si existe la columna
+    if event_column and event_column in filtered_df.columns:
+        # Crear una máscara booleana donde haya eventos (valores no nulos)
+        event_mask = filtered_df[event_column].notna()
+        events = filtered_df[event_mask]
+        ax.scatter(events['Date'], events[column_name], color='red', label='detected_events', zorder=5)
+
+
     setup_plot_style(ax, column_name, start_date, end_date)
     plt.tight_layout()
     plt.show(block=False)
 
-def plot_column(df):
+def plot_column(df, event_column='detected_events'):
     """Función principal que coordina el flujo de trabajo completo"""
     # Paso 1: Selección de columna
     keyword = plot_menu()
     if not keyword:
         return
-    
+
     # Paso 2: Búsqueda de columna
     column_name = select_column(df, keyword)
     if not column_name:
         print(f"❌ No column containing '{keyword}' found.")
         return
-    
+
     # Paso 3: Obtención de fechas
     start_date, end_date = get_date_range()
     if None in [start_date, end_date]:
         return
-    
+
     # Paso 4: Filtrado de datos
     filtered_df = filter_by_date(df, start_date, end_date)
     if filtered_df.empty:
         print("❌ No data found in the specified date range.")
         return
-    
-    # Paso 5: Visualización
-    plot_data(filtered_df, column_name, start_date, end_date)
+
+    # Paso 5: Visualización con eventos
+    plot_data(filtered_df, column_name, start_date, end_date, event_column)

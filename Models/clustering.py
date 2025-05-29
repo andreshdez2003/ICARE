@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
 from sklearn.cluster import DBSCAN
-from Utils.config import DBSCAN_EPS
 
-def detect_events_with_dbscan(data: np.ndarray) -> pd.DataFrame:
+
+def detect_events_with_dbscan(data: np.ndarray, eps) -> pd.DataFrame:
     """
     Versión corregida para datos 2D.
     Retorna DataFrame con:
@@ -12,7 +12,7 @@ def detect_events_with_dbscan(data: np.ndarray) -> pd.DataFrame:
     - event_type: Cluster ID
     - confidence: Confianza calculada
     """
-    db = DBSCAN(eps=DBSCAN_EPS, min_samples=2).fit(data)
+    db = DBSCAN(eps, min_samples=2).fit(data)
     labels = db.labels_
     
     events = []

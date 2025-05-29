@@ -1,4 +1,4 @@
 from .change_detection import multivariate_cusum
 from .clustering import detect_events_with_dbscan
 from .feature_engineering import apply_pca
-from .window_processing import process_data_by_windows
+from .window_processing import process_data_by_windows, process_data_full_signal

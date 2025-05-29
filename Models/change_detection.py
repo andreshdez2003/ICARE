@@ -3,7 +3,7 @@ import pandas as pd
 from scipy.stats import multivariate_normal
 from Utils.config import CUSUM_THRESHOLD
 
-def multivariate_cusum(pca_components: pd.DataFrame, threshold: float = CUSUM_THRESHOLD) -> np.ndarray:
+def multivariate_cusum(pca_components: pd.DataFrame, threshold: float) -> np.ndarray:
     """
     Versión corregida con manejo de matrices singulares y regularización.
     """
@@ -31,7 +31,7 @@ def multivariate_cusum(pca_components: pd.DataFrame, threshold: float = CUSUM_TH
         for t in range(1, n_samples):
             try:
                 # Usar pseudo-inversa para estabilidad numérica
-                inv_cov = np.linalg.pinv(cov)
+                    # inv_cov = np.linalg.pinv(cov)
                 log_prob = multivariate_normal.logpdf(data[t], mean=mu, cov=cov, allow_singular=True)
                 log_prob_prev = multivariate_normal.logpdf(data[t-1], mean=mu, cov=cov, allow_singular=True)
                 
@@ -39,7 +39,7 @@ def multivariate_cusum(pca_components: pd.DataFrame, threshold: float = CUSUM_TH
                 
                 if S[t] > threshold:
                     change_points.append(t)
-                    # Actualizar parámetros con nueva venta
+                    # Actualizar parámetros con nueva ventana
                     new_start = t
                     new_end = min(t + train_size, n_samples)
                     if new_end - new_start < n_features:
