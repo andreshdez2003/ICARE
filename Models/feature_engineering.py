@@ -4,25 +4,30 @@ import numpy as np
 
 def apply_pca(processed_data: pd.DataFrame, n_components: int = 3) -> pd.DataFrame:
     """
-    Aplica PCA a las columnas filtradas con '(y)' en los nombres.
+    Applies Principal Component Analysis (PCA) to columns containing '(y)' in their names.
 
-    Retorna un DataFrame con componentes principales.
-    Si hay menos muestras o columnas que n_components, se omite la ventana.
+    Parameters:
+    - processed_data: A DataFrame containing the data to transform.
+    - n_components: Number of principal components to compute.
+
+    Returns:
+    - A new DataFrame containing the PCA-transformed data with columns named 'PCA_1', 'PCA_2', etc.
+      If the number of samples or features is less than n_components, an empty DataFrame is returned.
     """
     try:
-        # Filtrar columnas con '(y)'
+        # Select columns that contain '(y)' in their names
         features = processed_data.filter(like='(y)')
         
-        # Validación de dimensiones mínimas para PCA
+        # Validate dimensions: need at least n_components rows and columns
         if features.shape[0] < n_components or features.shape[1] < n_components:
-            print(f"⚠️ Ventana descartada para PCA: shape {features.shape}, index: {processed_data.index[0]}–{processed_data.index[-1]}")
+            print(f"Window skipped for PCA: shape {features.shape}, index: {processed_data.index[0]}–{processed_data.index[-1]}")
             return pd.DataFrame()
 
-        # Aplicar PCA
+        # Apply PCA
         pca = PCA(n_components=n_components)
         pca_components = pca.fit_transform(features)
 
-        # Crear DataFrame con los componentes
+        # Create DataFrame for PCA components with same index as input
         pca_df = pd.DataFrame(
             pca_components,
             columns=[f"PCA_{i+1}" for i in range(n_components)],
@@ -31,5 +36,5 @@ def apply_pca(processed_data: pd.DataFrame, n_components: int = 3) -> pd.DataFra
         return pca_df
 
     except Exception as e:
-        print(f"❌ Error en PCA: {str(e)}")
+        print(f"Error during PCA: {str(e)}")
         return pd.DataFrame()
